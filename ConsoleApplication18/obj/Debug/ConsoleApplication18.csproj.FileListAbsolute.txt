@@ -1,0 +1,6 @@
+E:\проекты\ConsoleApplication18\ConsoleApplication18\bin\Debug\ConsoleApplication18.exe.config
+E:\проекты\ConsoleApplication18\ConsoleApplication18\bin\Debug\ConsoleApplication18.exe
+E:\проекты\ConsoleApplication18\ConsoleApplication18\bin\Debug\ConsoleApplication18.pdb
+E:\проекты\ConsoleApplication18\ConsoleApplication18\obj\Debug\ConsoleApplication18.exe
+E:\проекты\ConsoleApplication18\ConsoleApplication18\obj\Debug\ConsoleApplication18.pdb
+E:\проекты\ConsoleApplication18\ConsoleApplication18\obj\Debug\ConsoleApplication18.csprojResolveAssemblyReference.cache
