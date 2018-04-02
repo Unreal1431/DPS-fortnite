@@ -11,7 +11,8 @@ namespace Assets
 
 
 
-
+        private Color DarkRed = new Color(0.5F, 0F, 0F, 1F);
+        // создал цвет.
 
         public InputField[] inputDmg = new InputField[1];
         public InputField[] inputCC = new InputField[1];
@@ -88,9 +89,9 @@ namespace Assets
               if (Resultat[1].text != "Результат: " && Resultat[0].text != "Результат: ")
                {
                    if (double.Parse(Resultat[0].text) > double.Parse(Resultat[1].text))
-                       Resultat[0].color = Color.red;
+                       Resultat[0].color = DarkRed;
                    else
-                       Resultat[1].color = Color.red;
+                       Resultat[1].color = DarkRed;
                }
 
 
