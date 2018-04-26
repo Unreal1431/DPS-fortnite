@@ -14,15 +14,16 @@ namespace Assets
         private Color DarkRed = new Color(0.5F, 0F, 0F, 1F);
         // создал цвет.
 
-        public InputField[] inputDmg = new InputField[1];
-        public InputField[] inputCC = new InputField[1];
-        public InputField[] inputCdmg = new InputField[1];
-        public InputField[] inputSpeed = new InputField[1];
-        public InputField[] inputAmmoSize = new InputField[1];
-        public InputField[] inputReloadSpeed = new InputField[1];
+        // Массив инпут филдов для статов.
+
+        public InputField[] statField = new InputField[12];
+        public Toggle[] statToggle = new Toggle[8];
+        public InputField[] modifierField = new InputField[8];
+     
+
         // массив текстов с результатом расчета
         public Text[] Resultat = new Text[1];
-       
+
         // система евента для переключение табом.
         EventSystem system;
 
@@ -50,38 +51,43 @@ namespace Assets
                 //else Debug.Log("next nagivation element not found");
                 else
                 {
-                    next = Selectable.allSelectables[5];
-                    system.SetSelectedGameObject(next.gameObject, new BaseEventData(system));
+                        next = Selectable.allSelectables[4];
+                        system.SetSelectedGameObject(next.gameObject, new BaseEventData(system));
+                   
+                    // 11 - 1; 4 - 2; обойма - 0;
                 }
 
             }
         }
 
-
-
-
+        
         // функция расчета привязаная к кнопке "посчитать" .
         public void Result(string new_text)
         {
             Resultat[0].color = Color.black;
             Resultat[1].color = Color.black;
 
+            
 
-            if (inputDmg[0].text != "")
+
+
+            if (statField[0].text != "")
             {
-                Weapon weapon_0 = new Weapon(inputDmg[0], inputCC[0], inputCdmg[0], inputSpeed[0], inputAmmoSize[0], inputReloadSpeed[0]);
-                Resultat[0].text = "" + weapon_0.Dps(); ;// Считаем Дпс и присваеваем полученное значению текстовой надписи.
+                Weapon weapon_0 = new Weapon(statField, statToggle, modifierField);
+                Resultat[0].text = "" + weapon_0.Dps(); // Считаем Дпс и присваеваем полученное значению текстовой надписи.
             }
             else
                 Resultat[0].text = "Результат: ";
+            
 
-           if (inputDmg[1].text != "")
+            if (statField[6].text != "")
             {
-                Weapon weapon_1 = new Weapon(inputDmg[1], inputCC[1], inputCdmg[1], inputSpeed[1], inputAmmoSize[1], inputReloadSpeed[1]);
+                Weapon weapon_1 = new Weapon(statField, statToggle, modifierField);
                 Resultat[1].text = "" + weapon_1.Dps();// Считаем Дпс и присваеваем полученное значению текстовой надписи.
             }
             else
                 Resultat[1].text = "Результат: ";
+            
 
 
 
