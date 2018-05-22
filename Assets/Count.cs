@@ -10,21 +10,20 @@ namespace Assets
     {
 
 
-
         private Color DarkRed = new Color(0.5F, 0F, 0F, 1F);
         // создал цвет.
 
         // Массив инпут филдов для статов.
 
         public InputField[] statField = new InputField[12];
-        public Toggle[] statToggle = new Toggle[8];
-        public InputField[] modifierField = new InputField[8];
-     
+        public Toggle[] statToggle = new Toggle[10];
+        public InputField[] modifierField = new InputField[10];
+
 
         // массив текстов с результатом расчета
         public Text[] Resultat = new Text[1];
 
-        // система евента для переключение табом.
+        // система евента для переключения табом.
         EventSystem system;
 
         void Start()
@@ -60,6 +59,20 @@ namespace Assets
             }
         }
 
+        public void Copy()
+        {
+            for (int i = 0; i < statField.Length - 6; i++)
+                statField[i+6].text = statField[i].text;
+
+            for (int i = 0; i < modifierField.Length - 5; i++)
+                modifierField[i + 5].text = modifierField[i].text;
+
+            //for (int i = 0; i < statToggle.Length - 5; i++)
+            //{
+            //    if (statToggle[i].isOn)
+            //        statToggle[i + 5].isOn;
+            //}
+        }
         
         // функция расчета привязаная к кнопке "посчитать" .
         public void Result(string new_text)
@@ -74,7 +87,7 @@ namespace Assets
             if (statField[0].text != "")
             {
                 Weapon weapon_0 = new Weapon(statField, statToggle, modifierField);
-                Resultat[0].text = "" + weapon_0.Dps(); // Считаем Дпс и присваеваем полученное значению текстовой надписи.
+                Resultat[0].text = "" + weapon_0; // Считаем Дпс и присваеваем полученное значению текстовой надписи.
             }
             else
                 Resultat[0].text = "Результат: ";
@@ -83,7 +96,7 @@ namespace Assets
             if (statField[6].text != "")
             {
                 Weapon weapon_1 = new Weapon(statField, statToggle, modifierField);
-                Resultat[1].text = "" + weapon_1.Dps();// Считаем Дпс и присваеваем полученное значению текстовой надписи.
+                Resultat[1].text = "" + weapon_1;// Считаем Дпс и присваеваем полученное значению текстовой надписи.
             }
             else
                 Resultat[1].text = "Результат: ";
