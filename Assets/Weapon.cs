@@ -42,7 +42,7 @@ namespace Assets
 
             cc = (stat[count++].text == "") ? 0 : int.Parse(stat[count - 1].text);
             if (toggle[modCount].isOn && modifier[modCount].text != "") { double temp = cc; temp += (75 * double.Parse(modifier[modCount].text) / (50 + double.Parse(modifier[modCount].text)) + 0.5); cc = (int)temp; }
-            
+            modCount++;
 
             cdmg = (stat[count++].text == "") ? 0 : 1 + (double.Parse(stat[count - 1].text) / 100);//********** перевод процентов в дробь для удобного умножения атаки.********** 
 
