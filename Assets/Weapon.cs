@@ -12,7 +12,7 @@ namespace Assets
     public class Weapon
     {
         double dmg;
-        int cc;
+        double cc;
         double cdmg;
         double speed;
         int ammosize;
@@ -42,11 +42,11 @@ namespace Assets
             if (toggle[modCount].isOn && modifier[modCount].text != "") dmg *= (1 + (double.Parse(modifier[modCount].text)) / 100); // прибавляем процент
             modCount++;
 
-            cc = (stat[count++].text == "") ? 0 : int.Parse(stat[count - 1].text);
-            if (toggle[modCount].isOn && modifier[modCount].text != "") { cc += (int)((75 * double.Parse(modifier[modCount].text) / (50 + double.Parse(modifier[modCount].text)) + 0.5)); }
+            cc = (stat[count++].text == "") ? 0 : double.Parse(stat[count - 1].text) / 100; // переводим в дробь
+            if (toggle[modCount].isOn && modifier[modCount].text != "") { cc += ((75 * double.Parse(modifier[modCount].text) / (50 + double.Parse(modifier[modCount].text)) + 0.5)) / 100; } // прибавляем модификатор уменьшающийся с увеличением значения
             modCount++;
 
-            cdmg = (stat[count++].text == "") ? 0 : 1 + (double.Parse(stat[count - 1].text) / 100);//********** перевод процентов в дробь для удобного умножения атаки.********** 
+            cdmg = (stat[count++].text == "") ? 0 : (double.Parse(stat[count - 1].text) / 100);//********** перевод процентов в дробь для удобного умножения атаки.********** 
 
             speed = (stat[count++].text == "") ? 0 : double.Parse(stat[count - 1].text);
             if (toggle[modCount].isOn && modifier[modCount].text != "") speed *= (1 + (double.Parse(modifier[modCount].text)) / 100); // прибавляем процент
@@ -69,14 +69,15 @@ namespace Assets
             { count = 0; modCount = 0; }
 
             Dps();
-
+            //Forgotten_Dps();
         }
 
 
 
-        public void Dps()
+        public void Forgotten_Dps()
         {
-
+            cdmg += 1;
+            cc *= 100;
             
                 double ammospend = 0;
 
@@ -97,12 +98,12 @@ namespace Assets
                     // выполнить количество атак в секунду равное скорости атаки
                         for (int j = 0; j < speed - 1; j++)
                             {
-                                total += (Random.Range(0, 101) <= cc && cc != 0) ? (dmg * cdmg) : dmg; // проверка на срабатывание крита, если крит сработал прибавить к урону критический урон, если не сработал - обычный урон.
+                                total += (Random.Range(1, 101) <= cc && cc != 0) ? (dmg * cdmg) : dmg; // проверка на срабатывание крита, если крит сработал прибавить к урону критический урон, если не сработал - обычный урон.
                                 ammospend++; // прибавить кол-во потраченых пуль.
                             }
 
-                        total += (Random.Range(0, 101) <= cc && cc != 0) ? (dmg * cdmg) * fractionalSpeed : dmg * fractionalSpeed;
-                        ammospend += fractionalSpeed;
+                        total += (Random.Range(1, 101) <= cc && cc != 0) ? (dmg * cdmg) * fractionalSpeed : dmg * fractionalSpeed; // прибавить последнюю атаку, или дробную часть от дробной атаки.
+                    ammospend += fractionalSpeed; 
 
                 }
                     // общий урон разделить на 1000 , потому что атаки проводились 1000 секунд.
@@ -110,9 +111,15 @@ namespace Assets
                 }
                 // вычисляем дпс путём деления на 100, так как проводили атаки 100 раз, и присваеваем переменной.
                 dps /= 100;
-            
+        }
 
-
+        public void Dps()
+        {
+            dps = dmg * ammosize;
+            double time = ammosize / speed + reloadspeed;
+            dps /=  time;
+            dps += dps * cc * cdmg;
+             
         }
 
 

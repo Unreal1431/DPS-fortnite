@@ -19,7 +19,18 @@ namespace Assets
         public Toggle[] statToggle = new Toggle[10];
         public InputField[] modifierField = new InputField[10];
         public Toggle[] tabToggle = new Toggle[3];
+        int persona_1;
+        int persona_2;
 
+        public int Persona_1
+        {
+            set { persona_1 = value; }
+        }
+
+        public int Persona_2
+        {
+            set { persona_2 = value; }
+        }
 
         // массив текстов с результатом расчета
         public Text[] Resultat = new Text[2];
@@ -90,24 +101,25 @@ namespace Assets
             else if (tabToggle[1].isOn)
             { CreateTrap(); }
             else if (tabToggle[2].isOn)
-            { CreateLauncher(); }
+            { CreateLauncher();}
             else if (tabToggle[3].isOn)
             { CreateMelee(); }
 
-
             // если проводилось сравнение, выявляем больший урон и окрашиваем в красный цвет.
-            if (Resultat[1].text != "Результат: " && double.Parse(Resultat[1].text) != 0 && Resultat[0].text != "Результат: " && double.Parse(Resultat[0].text) != 0)
+            if (Resultat[1].text != "Результат: " && double.Parse(Resultat[1].text) != 0 && Resultat[0].text != "Результат: " && double.Parse(Resultat[0].text) != 0 && double.Parse(Resultat[0].text) != double.Parse(Resultat[1].text))
                {
                    if (double.Parse(Resultat[0].text) > double.Parse(Resultat[1].text))
                 {
                     Resultat[0].color = DarkRed;
-                    Difference[0].text += "(" + (int)(double.Parse(Resultat[0].text) / (double.Parse(Resultat[1].text) / 100) - 100 ) + "%)";
+                    if (Difference[0].text == Difference[1].text)
+                        Difference[0].text += "(" + (int)(double.Parse(Resultat[0].text) / (double.Parse(Resultat[1].text) / 100) - 100 ) + "%)";
                 }
 
                 else
                 {
                     Resultat[1].color = DarkRed;
-                    Difference[1].text += "(" + (int)(double.Parse(Resultat[1].text) / (double.Parse(Resultat[0].text) / 100) - 100) + "%)";
+                    if (Difference[0].text == Difference[1].text)
+                        Difference[1].text += "(" + (int)(double.Parse(Resultat[1].text) / (double.Parse(Resultat[0].text) / 100) - 100) + "%)";
                 }
                        
                }
@@ -157,56 +169,62 @@ namespace Assets
 
         private void CreateLauncher()
         {
-            int resources = 1;
-            int[] tempCost = new int[2];
-            double[] tempDps = new double[2];
-            double[] tempTime = new double[2];
+            //int resources = 1;
+            //int[] tempCost = new int[2];
+            //double[] tempDps = new double[2];
+            //double[] tempTime = new double[2];
 
-            if (statField[0].text != "")
+            if (statField[0].text != "" || statField[6].text != "")
             {
                 Launcher weapon_0 = new Launcher(statField, statToggle, modifierField);
                 Resultat[0].text = "" + weapon_0; // Считаем Дпс и присваеваем полученное значению текстовой надписи.
-                Difference[0].text = weapon_0.Time + "(сек)\n";
-                tempDps[0] = weapon_0.DPS; // Считаем Дпс и присваеваем полученное значению текстовой надписи.
-                tempTime[0] = weapon_0.Time;
-                tempCost[0] = weapon_0.Cost;
+                if (Resultat[0].text != "0")
+                {
+                    Difference[0].text = (weapon_0.Impact == 0) ? "Урон " : "Толчок ";
+                    Difference[0].text += (weapon_0.DPS == 0) ? "за руду " : "в секунду";
+                }
+                else
+                    Resultat[0].text = "Результат: ";
             }
             else
                 Resultat[0].text = "Результат: ";
 
 
-            if (statField[statField.Length / 2].text != "")
+            if (statField[statField.Length / 2].text != "" || statField[statField.Length - 1].text != "")
             {
                 Launcher weapon_1 = new Launcher(statField, statToggle, modifierField);
-                Resultat[1].text = "" + weapon_1; // Считаем Дпс и присваеваем полученное значению текстовой надписи.
-                Difference[1].text = weapon_1.Time + "(сек)\n";
-                tempDps[1] = weapon_1.DPS; // Считаем Дпс и присваеваем полученное значению текстовой надписи.
-                tempTime[1] = weapon_1.Time;
-                tempCost[1] = weapon_1.Cost;
+                Resultat[1].text = "" + weapon_1;// Считаем Дпс и присваеваем полученное значению текстовой надписи.
+                if (Resultat[1].text != "0")
+                {
+                    Difference[1].text = (weapon_1.Impact == 0) ? "Урон " : "Толчок ";
+                    Difference[1].text += (weapon_1.DPS == 0) ? "за руду " : "в секунду";
+                }
+                else
+                    Resultat[1].text = "Результат: ";
             }
             else
                 Resultat[1].text = "Результат: ";
 
 
-            if (tempCost[0] != tempCost[1] && tempCost[0] != 0 && tempCost[1] != 0)
-            {
-                for (int i = tempCost[0] < tempCost[1] ? tempCost[0] * 2 : tempCost[1] * 2; i < 100; i++)
-                {
-                    if (i % tempCost[0] == 0)
-                        if (i % tempCost[1] == 0)
-                        {
-                            resources = i;
-                            break;
-                        }         
-                }
-                
-                for (int i = 0; i < tempTime.Length; i++)
-                {
-                    int weaponCount = resources / tempCost[i];
-                    Resultat[i].text = "" + tempDps[i] * weaponCount; // Считаем Дпс и присваеваем полученное значению текстовой надписи.
-                    Difference[i].text = "" + tempTime[i] * weaponCount;
-                } 
-            }
+            //if (tempCost[0] != tempCost[1] && tempCost[0] != 0 && tempCost[1] != 0)
+            //{
+            //    for (int i = tempCost[0] < tempCost[1] ? tempCost[0] * 2 : tempCost[1] * 2; i < 100; i++)
+            //    {
+            //        if (i % tempCost[0] == 0)
+            //            if (i % tempCost[1] == 0)
+            //            {
+            //                resources = i;
+            //                break;
+            //            }         
+            //    }
+
+            //    for (int i = 0; i < tempTime.Length; i++)
+            //    {
+            //        int weaponCount = resources / tempCost[i];
+            //        Resultat[i].text = "" + tempDps[i] * weaponCount; // Считаем Дпс и присваеваем полученное значению текстовой надписи.
+            //        Difference[i].text = "" + tempTime[i] * weaponCount;
+            //    } 
+            //}
         }
 
 
@@ -214,7 +232,7 @@ namespace Assets
         {
             if (statField[0].text != "")
             {
-                Melee weapon_0 = new Melee(statField, statToggle, modifierField);
+                Melee weapon_0 = new Melee(statField, statToggle, modifierField, persona_1);
                 Resultat[0].text = "" + weapon_0; // Считаем Дпс и присваеваем полученное значению текстовой надписи.
             }
             else
@@ -223,7 +241,7 @@ namespace Assets
 
             if (statField[statField.Length / 2].text != "")
             {
-                Melee weapon_1 = new Melee(statField, statToggle, modifierField);
+                Melee weapon_1 = new Melee(statField, statToggle, modifierField, persona_2);
                 Resultat[1].text = "" + weapon_1;// Считаем Дпс и присваеваем полученное значению текстовой надписи.
             }
             else
